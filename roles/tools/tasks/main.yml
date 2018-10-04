@@ -1,0 +1,36 @@
+---
+- name: Install some tools
+  apt:
+    pkg: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - cowsay
+    - curl
+    - git
+    - htop
+    - lolcat
+    - nginx
+    - ntp
+    - python3-pip
+    - tmux
+    - vim
+    - zsh
+  notify:
+    - start ntp
+
+- name: Clone oh-my-zsh repo
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "{{ home_dir }}/.oh-my-zsh"
+
+- name: Adding .zshrc file
+  template:
+    src: ../templates/.zshrc.j2
+    dest: "{{ home_dir }}/.zshrc"
+    owner: "{{ user }}"
+
+- name: Set zsh as default shell
+  user:
+    name: "{{ user }}"
+    shell: /bin/zsh

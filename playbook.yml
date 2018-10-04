@@ -1,0 +1,14 @@
+---
+- name: Provisionning webservers group
+  hosts: all
+  become: yes
+  vars:
+    user: vagrant
+    group: docker
+    project_name: my-project
+    project_dir: /var/www/my-project
+    home_dir: /home/vagrant
+  roles:
+    - tools
+    - docker
+    - project
